@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAVIDO INHOUSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg-base: #09090b;
+        --surface-dark: rgba(24, 24, 27, 0.6);
+        --surface-border: rgba(255, 255, 255, 0.08);
+        --text-main: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+
+        --ref-blue: #0D52D6;
+        --ref-green: #39FF14;
+        --ref-green-bg: #4CFF50;
+        --ref-purple-start: #8E2DE2;
+        --ref-purple-end: #4A00E0;
+        --ref-white: #f4f4f5;
+        --ref-brown: #6B4226;
+
+        --radius: 20px;
+        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: var(--font-family);
+        background-color: var(--bg-base);
+        color: var(--text-main);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .bg-fx {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: -1;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at 15% 50%, rgba(13, 82, 214, 0.08), transparent 40%),
+            radial-gradient(circle at 85% 20%, rgba(76, 255, 80, 0.05), transparent 40%);
+        animation: pulse 15s ease-in-out infinite alternate;
+    }
+
+    .particles {
+        position: absolute; width: 100%; height: 100%;
+        background-image:
+            radial-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+            radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+        background-size: 50px 50px, 100px 100px;
+        background-position: 0 0, 25px 25px;
+        animation: floatUp 60s linear infinite;
+        opacity: 0.3;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.8; }
+        100% { transform: scale(1.1); opacity: 1; }
+    }
+    @keyframes floatUp {
+        0% { background-position: 0 0, 25px 25px; }
+        100% { background-position: 0 -1000px, 25px -1000px; }
+    }
+
+    .nav-container {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(9, 9, 11, 0.8);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--surface-border);
+        padding: 0 40px;
+    }
+
+    .nav-inner {
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .logo {
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: -0.04em;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .logo::before {
+        content: ''; display: block; width: 12px; height: 12px;
+        background: var(--ref-green); border-radius: 50%;
+        box-shadow: 0 0 10px var(--ref-green);
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 32px;
+    }
+
+    .nav-item {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        padding: 8px 0;
+        position: relative;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+
+    .nav-item:hover { color: var(--text-main); }
+    .nav-item.active { color: var(--text-main); }
+    .nav-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: -24px; left: 0; width: 100%; height: 2px;
+        background: var(--ref-green);
+        box-shadow: 0 0 8px rgba(76, 255, 80, 0.5);
+    }
+
+    .user-profile {
+        display: flex; align-items: center; gap: 12px;
+        font-size: 14px; font-weight: 500;
+    }
+    .avatar {
+        width: 36px; height: 36px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--ref-blue), var(--ref-purple-start));
+    }
+
+    main {
+        max-width: 1400px;
+        margin: 40px auto;
+        padding: 0 40px;
+    }
+
+    .page { display: none; animation: fadeIn 0.4s ease forwards; }
+    .page.active { display: block; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+        background: var(--surface-dark);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius);
+        padding: 24px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        overflow: hidden;
+    }
+
+    .card-solid-green {
+        background: var(--ref-green-bg);
+        color: #000;
+        border: none;
+    }
+    .card-solid-green .text-muted { color: rgba(0,0,0,0.6); }
+    .card-solid-green .dash { background: rgba(0,0,0,0.2); }
+    .card-solid-green .dash.active { background: #000; }
+
+    .card-solid-blue {
+        background: var(--ref-blue);
+        color: #fff;
+        border: none;
+    }
+    .card-solid-blue .text-muted { color: rgba(255,255,255,0.7); }
+
+    .card-gradient-purple {
+        background: linear-gradient(135deg, var(--ref-purple-start), var(--ref-purple-end));
+        color: #fff;
+        border: none;
+    }
+
+    .card-solid-white {
+        background: var(--ref-white);
+        color: #111;
+        border: none;
+    }
+    .card-solid-white .text-muted { color: rgba(0,0,0,0.5); }
+    .card-solid-white .dash { background: rgba(0,0,0,0.15); }
+    .card-solid-white .dash.active { background: rgba(0,0,0,0.8); }
+
+    .card-solid-brown {
+        background: var(--ref-brown);
+        color: #fff;
+        border: none;
+    }
+
+    .card-dashes {
+        display: flex; gap: 4px; margin-bottom: 20px;
+    }
+    .dash {
+        height: 2px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+    }
+    .dash.short { width: 12px; }
+    .dash.long { width: 32px; }
+    .dash.active { background: rgba(255, 255, 255, 0.9); }
+
+    .card-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+        margin-bottom: 8px;
+        opacity: 0.8;
+    }
+    .card-title {
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin-bottom: 12px;
+    }
+    .card-desc {
+        font-size: 14px;
+        line-height: 1.5;
+        opacity: 0.8;
+        margin-bottom: auto;
+    }
+    .card-footer-link {
+        margin-top: 32px;
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        cursor: pointer;
+    }
+    .card-footer-brand {
+        margin-top: 32px;
+        font-size: 12px;
+        font-weight: 500;
+        opacity: 0.6;
+    }
+
+    .text-muted { color: var(--text-muted); }
+    .text-green { color: var(--ref-green); }
+    .h-section { font-size: 18px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 32px;
+    }
+    .stat-val { font-size: 36px; font-weight: 700; letter-spacing: -0.03em; margin-top: 8px; }
+
+    .main-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 32px;
+    }
+
+    .live-match-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .side-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .list-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .list-item-left { display: flex; align-items: center; gap: 12px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot.blue { background: var(--ref-blue); }
+    .dot.red { background: #ff4757; }
+
+    .betting-hero {
+        background: linear-gradient(to right, rgba(13, 82, 214, 0.1), rgba(255, 71, 87, 0.1));
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius);
+        padding: 40px;
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .vs-container {
+        display: flex; justify-content: center; align-items: center; gap: 40px;
+        margin-bottom: 32px;
+    }
+    .team { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; }
+    .team.blue { color: #4da3ff; }
+    .team.red { color: #ff6b81; }
+    .vs-text { font-size: 16px; color: var(--text-muted); font-weight: 600; }
+
+    .slider-container {
+        max-width: 600px; margin: 0 auto;
+    }
+    .slider-labels { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; font-weight: 600;}
+
+    input[type=range] {
+        -webkit-appearance: none; width: 100%; background: transparent;
+    }
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+        background: #fff; cursor: pointer; margin-top: -10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+        width: 100%; height: 4px; cursor: pointer;
+        background: linear-gradient(to right, var(--ref-blue) 50%, #ff4757 50%);
+        border-radius: 2px;
+    }
+
+    .games-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+    }
+
+    .game-card { aspect-ratio: 3/4; cursor: pointer; }
+    .game-card:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+    .store-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+    }
+    .product-price { font-size: 24px; font-weight: 700; color: var(--ref-green); margin: 16px 0; }
+    .btn-buy {
+        background: var(--text-main); color: #000;
+        border: none; padding: 12px; border-radius: 8px;
+        font-weight: 600; font-family: var(--font-family);
+        cursor: pointer; transition: opacity 0.2s;
+        margin-top: auto;
+    }
+    .btn-buy:hover { opacity: 0.9; }
+</style>
+</head>
+<body>
+
+<div class="bg-fx"><div class="particles"></div></div>
+
+<nav class="nav-container">
+    <div class="nav-inner">
+        <div class="logo">DAVIDO INHOUSE</div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="switchTab('page-home', this)">메인 대시보드</div>
+            <div class="nav-item" onclick="switchTab('page-minigames', this)">미니게임</div>
+            <div class="nav-item" onclick="switchTab('page-store', this)">내전 상점</div>
+        </div>
+        <div class="user-profile">
+            <div class="avatar"></div>
+            <span>User994</span>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <div id="page-home" class="page active">
+        <div class="stats-row">
+            <div class="card card-solid-blue">
+                <div class="card-dashes">
+                    <div class="dash long active"></div>
+                    <div class="dash short"></div>
+                    <div class="dash short"></div>
+                </div>
+                <div class="card-label">Platform Stats</div>
+                <div class="card-title">현재 접속자</div>
+                <div class="stat-val">1,248 <span style="font-size:16px; font-weight:500; opacity:0.8">명</span></div>
+                <div class="card-footer-brand">Davido Inhouse</div>
+            </div>
+
+            <div class="card card-solid-green">
+                <div class="card-dashes">
+                    <div class="dash short"></div>
+                    <div class="dash long active"></div>
+                    <div class="dash short"></div>
+                </div>
+                <div class="card-label">Global Pool</div>
+                <div class="card-title">누적 배팅 포인트</div>
+                <div class="stat-val">84.5M <span style="font-size:16px; font-weight:500; opacity:0.8">P</span></div>
+                <div class="card-footer-brand">Davido Inhouse</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="main-content">
+                <div class="h-section">
+                    <span class="dot" style="background:var(--ref-green); box-shadow: 0 0 8px var(--ref-green)"></span>
+                    진행중인 내전
+                </div>
+                <div class="live-match-grid">
+                    <div class="card">
+                        <div class="card-label text-green">LIVE MATCH</div>
+                        <div class="card-title">T1 vs GENG 내전</div>
+                        <div class="card-desc">현재 2세트 진행중<br>배팅 마감까지 5분 남음</div>
+                        <div class="list-item" style="margin-top: 16px; border:none; padding:0;">
+                            <div style="color:#4da3ff; font-weight:600;">BLUE (1.8x)</div>
+                            <div style="color:#ff6b81; font-weight:600;">RED (2.1x)</div>
+                        </div>
+                        <div class="card-footer-link" style="color:var(--ref-green)">배팅 참여하기 +</div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-label text-muted">PREPARING</div>
+                        <div class="card-title">심해 브론즈 대전</div>
+                        <div class="card-desc">참가자 모집중 (8/10)<br>오늘 밤 10시 시작 예정</div>
+                        <div class="card-footer-link">상세 보기 +</div>
+                    </div>
+                     <div class="card card-gradient-purple">
+                         <div class="card-dashes">
+                            <div class="dash long active"></div>
+                            <div class="dash short"></div>
+                        </div>
+                        <div class="card-label" style="opacity:0.9">EVENT MATCH</div>
+                        <div class="card-title">스트리머 멸망전</div>
+                        <div class="card-desc">특별 배당률 적용 중!<br>총 상금 10,000,000 P</div>
+                        <div class="card-footer-link">Explore Match +</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="side-stack">
+                <div class="card">
+                    <div class="h-section">실시간 피드</div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span class="text-muted" style="font-size:12px;">방금</span>
+                            <span style="font-size:14px;">User12님이 500P 배팅</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span class="text-muted" style="font-size:12px;">2분전</span>
+                            <span style="font-size:14px;">슬롯에서 10,000P 잭팟!</span>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span class="text-muted" style="font-size:12px;">5분전</span>
+                            <span style="font-size:14px;">새로운 내전이 생성됨</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="h-section">포인트 랭킹</div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span style="color:#ffd700; font-weight:bold; width:20px;">1</span>
+                            <span style="font-size:14px; font-weight:500;">Faker_Fan</span>
+                        </div>
+                        <span class="text-green" style="font-weight:600; font-size:14px;">1.2M</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span style="color:#c0c0c0; font-weight:bold; width:20px;">2</span>
+                            <span style="font-size:14px; font-weight:500;">Chovy_God</span>
+                        </div>
+                        <span class="text-green" style="font-weight:600; font-size:14px;">980K</span>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-left">
+                            <span style="color:#cd7f32; font-weight:bold; width:20px;">3</span>
+                            <span style="font-size:14px; font-weight:500;">Bronze_King</span>
+                        </div>
+                        <span class="text-green" style="font-weight:600; font-size:14px;">450K</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-minigames" class="page">
+        <div class="betting-hero">
+            <div class="card-label" style="color:var(--text-main); margin-bottom:16px;">🔥 메인 매치 라이브 배팅 🔥</div>
+            <div class="vs-container">
+                <div class="team blue">TEAM BLUE<br><span style="font-size:18px; color:var(--text-muted)">x 1.85</span></div>
+                <div class="vs-text">VS</div>
+                <div class="team red">TEAM RED<br><span style="font-size:18px; color:var(--text-muted)">x 2.10</span></div>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-labels">
+                    <span style="color:#4da3ff">블루팀 승리 배팅</span>
+                    <span style="color:#ff6b81">레드팀 승리 배팅</span>
+                </div>
+                <input type="range" min="1" max="100" value="50">
+                <div style="margin-top:24px;">
+                    <button style="background:var(--text-main); color:#000; padding:12px 32px; border-radius:8px; border:none; font-weight:bold; font-family:var(--font-family); cursor:pointer;">10,000 P 배팅하기</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-section" style="margin-bottom: 24px;">미니게임 아케이드</div>
+        <div class="games-grid">
+            <div class="card card-solid-blue game-card">
+                <div class="card-dashes"><div class="dash long active"></div><div class="dash short"></div></div>
+                <div class="card-label">CASINO</div>
+                <div class="card-title">Slot Machine</div>
+                <div class="card-footer-link" style="color:#fff">Play Game +</div>
+            </div>
+
+            <div class="card card-solid-green game-card">
+                <div class="card-dashes"><div class="dash short"></div><div class="dash long active"></div></div>
+                <div class="card-label">CASINO</div>
+                <div class="card-title">Roulette</div>
+                <div class="card-footer-link" style="color:#000">Play Game +</div>
+            </div>
+
+            <div class="card card-gradient-purple game-card">
+                <div class="card-dashes"><div class="dash short"></div><div class="dash short"></div><div class="dash long active"></div></div>
+                <div class="card-label">MINI</div>
+                <div class="card-title">Card Flip</div>
+                <div class="card-footer-link" style="color:#fff">Play Game +</div>
+            </div>
+
+            <div class="card card-solid-white game-card">
+                <div class="card-dashes"><div class="dash short"></div><div class="dash short"></div></div>
+                <div class="card-label">CARD</div>
+                <div class="card-title">Blackjack</div>
+                <div class="card-footer-link" style="color:#111">Play Game +</div>
+            </div>
+
+            <div class="card card-solid-brown game-card">
+                <div class="card-dashes"><div class="dash long active"></div></div>
+                <div class="card-label">POKER</div>
+                <div class="card-title">Texas Hold'em</div>
+                <div class="card-footer-link" style="color:#fff">Play Game +</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-store" class="page">
+        <div class="h-section" style="margin-bottom: 24px;">포인트 상점</div>
+        <div class="store-grid">
+            <div class="card">
+                <div class="card-label text-muted">PROFILE ITEM</div>
+                <div class="card-title">네온 테두리 효과</div>
+                <div class="card-desc">프로필 사진에 빛나는 네온 효과를 추가합니다.</div>
+                <div class="product-price">5,000 P</div>
+                <button class="btn-buy">구매하기</button>
+            </div>
+
+            <div class="card">
+                <div class="card-label text-muted">CHAT ITEM</div>
+                <div class="card-title">프리미엄 뱃지</div>
+                <div class="card-desc">채팅창 아이디 옆에 프리미엄 뱃지가 표시됩니다.</div>
+                <div class="product-price">10,000 P</div>
+                <button class="btn-buy">구매하기</button>
+            </div>
+
+            <div class="card">
+                <div class="card-label text-muted">UTILITY</div>
+                <div class="card-title">닉네임 변경권</div>
+                <div class="card-desc">계정의 닉네임을 1회 변경할 수 있습니다.</div>
+                <div class="product-price">50,000 P</div>
+                <button class="btn-buy">구매하기</button>
+            </div>
+
+            <div class="card card-solid-green">
+                 <div class="card-dashes">
+                    <div class="dash long active"></div>
+                    <div class="dash short"></div>
+                </div>
+                <div class="card-label">SPECIAL BOX</div>
+                <div class="card-title">랜덤 포인트 박스</div>
+                <div class="card-desc" style="color:rgba(0,0,0,0.7)">최대 1,000,000P 획득 기회!</div>
+                <div class="product-price" style="color:#000;">3,000 P</div>
+                <button class="btn-buy" style="background:#000; color:#fff;">열어보기</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function switchTab(pageId, element) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        element.classList.add('active');
+
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
