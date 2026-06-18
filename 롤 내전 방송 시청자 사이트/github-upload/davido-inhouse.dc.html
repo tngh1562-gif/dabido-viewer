@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Chakra+Petch:wght@500;700&family=Gothic+A1:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#05060e;color:#eaf2ff;font-family:'Gothic A1',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  ::selection{background:rgba(53,230,255,.3)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:#070a16}
+  ::-webkit-scrollbar-thumb{background:linear-gradient(#35e6ff,#a86bff);border-radius:8px}
+  @keyframes gridmove{from{background-position:0 0}to{background-position:0 60px}}
+  @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-26px)}}
+  @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+  @keyframes pulseGlow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+  @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(2400px)}}
+  @keyframes spinIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes flick{0%,100%{opacity:1}48%{opacity:1}50%{opacity:.4}52%{opacity:1}}
+  @keyframes ringspin{to{transform:rotate(360deg)}}
+  @keyframes popwin{0%{transform:scale(.6);opacity:0}40%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:1}}
+</style>
+</helmet>
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#35e6ff"/><stop offset="0.5" stop-color="#a86bff"/><stop offset="1" stop-color="#ff5cc8"/>
+    </linearGradient></defs>
+    <rect width="100" height="100" fill="#05060e"/>
+    <rect x="30" y="30" width="40" height="40" rx="12" fill="url(#g)"/>
+    <text x="50" y="58" font-family="Orbitron,sans-serif" font-size="22" font-weight="900" fill="#06121f" text-anchor="middle">D</text>
+  </svg>
+</template>
+
+<div style="position:relative;min-height:100vh;isolation:isolate">
+
+  <div style="position:fixed;inset:0;z-index:-3;background:radial-gradient(900px 600px at 12% -5%, rgba(53,230,255,.16), transparent 60%), radial-gradient(900px 700px at 92% 8%, rgba(168,107,255,.18), transparent 60%), radial-gradient(1000px 800px at 50% 115%, rgba(255,92,200,.12), transparent 60%), #05060e"></div>
+  <div style="position:fixed;inset:0;z-index:-2;background-image:linear-gradient(rgba(120,200,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(120,200,255,.06) 1px,transparent 1px);background-size:60px 60px;animation:gridmove 6s linear infinite;mask-image:radial-gradient(circle at 50% 30%,#000,transparent 80%)"></div>
+  <div style="position:fixed;left:6%;top:24%;width:340px;height:340px;border-radius:50%;z-index:-2;background:radial-gradient(circle,rgba(53,230,255,.22),transparent 70%);filter:blur(20px);animation:floatY 9s ease-in-out infinite"></div>
+  <div style="position:fixed;right:8%;bottom:14%;width:380px;height:380px;border-radius:50%;z-index:-2;background:radial-gradient(circle,rgba(168,107,255,.2),transparent 70%);filter:blur(20px);animation:floatY 11s ease-in-out infinite reverse"></div>
+  <sc-if value="{{ scanlines }}" hint-placeholder-val="{{ true }}">
+    <div style="position:fixed;left:0;right:0;top:0;height:140px;z-index:-1;pointer-events:none;background:linear-gradient(rgba(53,230,255,.07),transparent);animation:scan 7s linear infinite"></div>
+  </sc-if>
+
+  <!-- ===== TOP BAR ===== -->
+  <div style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 28px;background:linear-gradient(180deg,rgba(8,11,22,.92),rgba(8,11,22,.55));backdrop-filter:blur(14px);border-bottom:1px solid rgba(120,200,255,.16)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#35e6ff,#a86bff);box-shadow:0 0 22px rgba(53,230,255,.5);font-family:'Orbitron';font-weight:900;color:#06121f">D</div>
+      <div>
+        <div style="font-family:'Orbitron';font-weight:900;font-size:20px;letter-spacing:.06em;background:linear-gradient(90deg,#35e6ff,#a86bff,#ff5cc8,#35e6ff);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 5s linear infinite">DAVIDO INHOUSE</div>
+        <div style="font-family:'Gothic A1';font-size:11px;font-weight:700;letter-spacing:.32em;color:#7fa6c8;margin-top:1px">다비도의 내전 · 시청자 라운지</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;border:1px solid rgba(255,92,110,.4);background:rgba(255,92,110,.08)">
+        <span style="width:8px;height:8px;border-radius:50%;background:#ff5b6e;box-shadow:0 0 10px #ff5b6e;animation:flick 1.6s infinite"></span>
+        <span style="font-family:'Chakra Petch';font-weight:700;font-size:12px;letter-spacing:.12em;color:#ff9aa8">LIVE</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-radius:999px;background:linear-gradient(135deg,rgba(53,230,255,.16),rgba(168,107,255,.16));border:1px solid rgba(120,200,255,.35);box-shadow:0 0 26px rgba(53,230,255,.22)">
+        <span style="font-size:14px">💎</span>
+        <span style="font-family:'Orbitron';font-weight:900;font-size:20px;color:#cdebff;text-shadow:0 0 14px rgba(53,230,255,.6)">{{ points }}</span>
+        <span style="font-family:'Chakra Petch';font-weight:700;font-size:12px;color:#7fa6c8;letter-spacing:.1em">P</span>
+      </div>
+      <button onClick="{{ addPoints }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:700;font-size:12px;color:#9fd9ff;background:rgba(53,230,255,.08);border:1px solid rgba(53,230,255,.3);border-radius:10px;padding:9px 12px">+50 충전</button>
+      <button onClick="{{ resetAll }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:700;font-size:12px;color:#7e8aa3;background:transparent;border:1px solid rgba(120,140,180,.3);border-radius:10px;padding:9px 12px">리셋</button>
+    </div>
+  </div>
+
+  <!-- ===== TAB NAV ===== -->
+  <div style="display:flex;justify-content:center;gap:10px;padding:22px 16px 6px">
+    <button onClick="{{ goBet }}" style="{{ tabBetStyle }}">⚔️ 내전 배팅</button>
+    <button onClick="{{ goShop }}" style="{{ tabShopStyle }}">🛒 내전 상점</button>
+    <button onClick="{{ goGame }}" style="{{ tabGameStyle }}">🎮 미니게임</button>
+  </div>
+
+  <div style="max-width:1180px;margin:0 auto;padding:18px 22px 90px">
+
+    <!-- ============ BETTING ============ -->
+    <sc-if value="{{ isBet }}" hint-placeholder-val="{{ true }}">
+    <div>
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:18px">
+        <div>
+          <div style="font-family:'Chakra Petch';font-weight:700;font-size:12px;letter-spacing:.34em;color:#35e6ff">LIVE MATCH · 이기는 팀에 배팅</div>
+          <div style="font-family:'Orbitron';font-weight:900;font-size:34px;line-height:1.1;margin-top:6px">{{ matchTitle }}</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button onClick="{{ setWide }}" style="{{ layWideStyle }}">레이아웃 A · 스타디움</button>
+          <button onClick="{{ setTower }}" style="{{ layTowerStyle }}">레이아웃 B · 타워</button>
+        </div>
+      </div>
+
+      <!-- LAYOUT A: STADIUM -->
+      <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+      <div style="position:relative;display:grid;grid-template-columns:1fr 130px 1fr;gap:0;align-items:stretch;border-radius:24px;overflow:hidden;border:1px solid rgba(120,200,255,.16);background:linear-gradient(160deg,rgba(20,28,54,.6),rgba(10,14,30,.6));backdrop-filter:blur(14px);box-shadow:0 24px 70px rgba(0,0,0,.5)">
+        <!-- BLUE -->
+        <div style="position:relative;padding:30px 28px;background:linear-gradient(135deg,rgba(53,230,255,.16),transparent 70%)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <span style="font-family:'Orbitron';font-weight:900;font-size:18px;color:#35e6ff;text-shadow:0 0 14px rgba(53,230,255,.6)">BLUE</span>
+            <span style="{{ blueTagStyle }}">{{ blueTag }}</span>
+          </div>
+          <div style="font-family:'Gothic A1';font-weight:900;font-size:26px;margin-bottom:14px">{{ blueName }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px">
+            <sc-for list="{{ blueRoster }}" as="p" hint-placeholder-count="5">
+              <span style="font-size:11px;font-weight:700;color:#bfe6ff;background:rgba(53,230,255,.1);border:1px solid rgba(53,230,255,.25);border-radius:7px;padding:4px 8px">{{ p }}</span>
+            </sc-for>
+          </div>
+          <div style="font-family:'Chakra Petch';font-size:11px;letter-spacing:.2em;color:#7fa6c8">배당률</div>
+          <div style="font-family:'Orbitron';font-weight:900;font-size:54px;color:#9beaff;text-shadow:0 0 24px rgba(53,230,255,.5);line-height:1">{{ blueOdds }}<span style="font-size:22px;color:#5fb6d8">x</span></div>
+          <div style="margin-top:14px;height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden">
+            <div style="height:100%;border-radius:6px;background:linear-gradient(90deg,#35e6ff,#7ad9ff);box-shadow:0 0 14px rgba(53,230,255,.6);width:{{ blueBar }}"></div>
+          </div>
+          <div style="font-size:11px;color:#7fa6c8;margin-top:6px">베팅풀 {{ bluePool }}P · 점유율 {{ blueBar }}</div>
+          <button onClick="{{ pickBlue }}" style="{{ pickBlueStyle }}">이 팀에 배팅</button>
+        </div>
+        <!-- VS CORE -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(5,7,16,.5);border-left:1px solid rgba(120,200,255,.12);border-right:1px solid rgba(120,200,255,.12)">
+          <div style="width:70px;height:70px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(168,107,255,.3),transparent 70%);border:2px solid rgba(168,107,255,.5);box-shadow:0 0 30px rgba(168,107,255,.5);font-family:'Orbitron';font-weight:900;font-size:24px;color:#fff;animation:pulseGlow 2.6s ease-in-out infinite">VS</div>
+          <div style="margin-top:14px;font-family:'Chakra Petch';font-size:10px;letter-spacing:.2em;color:#7fa6c8;writing-mode:vertical-rl">BEST OF 1</div>
+        </div>
+        <!-- RED -->
+        <div style="position:relative;padding:30px 28px;text-align:right;background:linear-gradient(225deg,rgba(255,92,110,.16),transparent 70%)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;justify-content:flex-end">
+            <span style="{{ redTagStyle }}">{{ redTag }}</span>
+            <span style="font-family:'Orbitron';font-weight:900;font-size:18px;color:#ff7a89;text-shadow:0 0 14px rgba(255,92,110,.6)">RED</span>
+          </div>
+          <div style="font-family:'Gothic A1';font-weight:900;font-size:26px;margin-bottom:14px">{{ redName }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;justify-content:flex-end">
+            <sc-for list="{{ redRoster }}" as="p" hint-placeholder-count="5">
+              <span style="font-size:11px;font-weight:700;color:#ffd2d8;background:rgba(255,92,110,.1);border:1px solid rgba(255,92,110,.25);border-radius:7px;padding:4px 8px">{{ p }}</span>
+            </sc-for>
+          </div>
+          <div style="font-family:'Chakra Petch';font-size:11px;letter-spacing:.2em;color:#c89aa2">배당률</div>
+          <div style="font-family:'Orbitron';font-weight:900;font-size:54px;color:#ffb0ba;text-shadow:0 0 24px rgba(255,92,110,.5);line-height:1">{{ redOdds }}<span style="font-size:22px;color:#d87f8a">x</span></div>
+          <div style="margin-top:14px;height:8px;border-radius:6px;background:rgba(255,255,255,.06);overflow:hidden">
+            <div style="height:100%;border-radius:6px;margin-left:auto;background:linear-gradient(90deg,#ff5b6e,#ff9aa8);box-shadow:0 0 14px rgba(255,92,110,.6);width:{{ redBar }}"></div>
+          </div>
+          <div style="font-size:11px;color:#c89aa2;margin-top:6px">베팅풀 {{ redPool }}P · 점유율 {{ redBar }}</div>
+          <button onClick="{{ pickRed }}" style="{{ pickRedStyle }}">이 팀에 배팅</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- LAYOUT B: TOWER -->
+      <sc-if value="{{ isTower }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px">
+        <div style="position:relative;padding:30px;border-radius:22px;border:1px solid rgba(53,230,255,.3);background:linear-gradient(180deg,rgba(53,230,255,.12),rgba(10,14,30,.6));backdrop-filter:blur(14px);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)">
+          <div style="font-family:'Orbitron';font-weight:900;font-size:16px;color:#35e6ff;letter-spacing:.1em">BLUE TEAM</div>
+          <div style="font-family:'Gothic A1';font-weight:900;font-size:24px;margin:6px 0 18px">{{ blueName }}</div>
+          <div style="position:relative;width:188px;height:188px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#35e6ff {{ blueBar }}, rgba(255,255,255,.06) 0)">
+            <div style="position:absolute;inset:14px;border-radius:50%;background:#070b1a;display:grid;place-items:center;border:1px solid rgba(53,230,255,.25)">
+              <div>
+                <div style="font-family:'Orbitron';font-weight:900;font-size:44px;color:#9beaff;text-shadow:0 0 20px rgba(53,230,255,.5);line-height:1">{{ blueOdds }}<span style="font-size:18px">x</span></div>
+                <div style="{{ blueTagStyle }}">{{ blueTag }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:18px 0 6px">
+            <sc-for list="{{ blueRoster }}" as="p" hint-placeholder-count="5">
+              <span style="font-size:11px;font-weight:700;color:#bfe6ff;background:rgba(53,230,255,.1);border:1px solid rgba(53,230,255,.25);border-radius:7px;padding:4px 8px">{{ p }}</span>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;color:#7fa6c8;margin-bottom:14px">베팅풀 {{ bluePool }}P</div>
+          <button onClick="{{ pickBlue }}" style="{{ pickBlueStyle }}">이 팀에 배팅</button>
+        </div>
+        <div style="position:relative;padding:30px;border-radius:22px;border:1px solid rgba(255,92,110,.3);background:linear-gradient(180deg,rgba(255,92,110,.12),rgba(10,14,30,.6));backdrop-filter:blur(14px);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45)">
+          <div style="font-family:'Orbitron';font-weight:900;font-size:16px;color:#ff7a89;letter-spacing:.1em">RED TEAM</div>
+          <div style="font-family:'Gothic A1';font-weight:900;font-size:24px;margin:6px 0 18px">{{ redName }}</div>
+          <div style="position:relative;width:188px;height:188px;margin:0 auto;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#ff5b6e {{ redBar }}, rgba(255,255,255,.06) 0)">
+            <div style="position:absolute;inset:14px;border-radius:50%;background:#0b0710;display:grid;place-items:center;border:1px solid rgba(255,92,110,.25)">
+              <div>
+                <div style="font-family:'Orbitron';font-weight:900;font-size:44px;color:#ffb0ba;text-shadow:0 0 20px rgba(255,92,110,.5);line-height:1">{{ redOdds }}<span style="font-size:18px">x</span></div>
+                <div style="{{ redTagStyle }}">{{ redTag }}</div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:18px 0 6px">
+            <sc-for list="{{ redRoster }}" as="p" hint-placeholder-count="5">
+              <span style="font-size:11px;font-weight:700;color:#ffd2d8;background:rgba(255,92,110,.1);border:1px solid rgba(255,92,110,.25);border-radius:7px;padding:4px 8px">{{ p }}</span>
+            </sc-for>
+          </div>
+          <div style="font-size:11px;color:#c89aa2;margin-bottom:14px">베팅풀 {{ redPool }}P</div>
+          <button onClick="{{ pickRed }}" style="{{ pickRedStyle }}">이 팀에 배팅</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- BET CONSOLE -->
+      <div style="margin-top:18px;padding:24px;border-radius:20px;border:1px solid rgba(120,200,255,.18);background:linear-gradient(160deg,rgba(20,28,54,.55),rgba(10,14,30,.55));backdrop-filter:blur(14px)">
+        <sc-if value="{{ noBet }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:18px">
+            <div style="font-family:'Gothic A1';font-weight:800;font-size:16px;color:#cfe6ff">배팅 콘솔 <span style="font-weight:600;font-size:13px;color:#7fa6c8">· 선택: {{ pickedLabel }}</span></div>
+            <div style="font-size:12px;color:#7fa6c8">최대 {{ maxBet }}P · 보유 {{ points }}P</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ chips }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <input type="range" min="1" max="{{ maxBet }}" value="{{ betAmount }}" onInput="{{ onSlide }}" style="flex:1;min-width:180px;accent-color:#35e6ff">
+            <div style="text-align:right;min-width:160px">
+              <div style="font-size:11px;color:#7fa6c8">예상 적중 수령</div>
+              <div style="font-family:'Orbitron';font-weight:900;font-size:26px;color:#4dffb0;text-shadow:0 0 16px rgba(77,255,176,.4)">+{{ payoutPreview }}P</div>
+            </div>
+            <button onClick="{{ placeBet }}" style="{{ placeBetStyle }}">{{ betAmount }}P 배팅하기</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ hasBet }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px">
+          <div style="display:flex;align-items:center;gap:16px">
+            <div style="width:54px;height:54px;border-radius:14px;display:grid;place-items:center;font-family:'Orbitron';font-weight:900;font-size:22px;{{ betChipStyle }}">{{ betTeamShort }}</div>
+            <div>
+              <div style="font-family:'Gothic A1';font-weight:800;font-size:17px">{{ betTeamName }} 승리에 {{ lockedAmount }}P</div>
+              <div style="font-size:13px;color:#7fa6c8">고정 배당 {{ lockedOdds }}x · 적중 시 <b style="color:#4dffb0">+{{ lockedPayout }}P</b></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <span style="align-self:center;font-size:12px;color:#7fa6c8">결과 발표:</span>
+            <button onClick="{{ blueWins }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#06121f;background:linear-gradient(135deg,#35e6ff,#7ad9ff);border:none;border-radius:12px;padding:11px 18px">BLUE 승</button>
+            <button onClick="{{ redWins }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#1a0510;background:linear-gradient(135deg,#ff5b6e,#ff9aa8);border:none;border-radius:12px;padding:11px 18px">RED 승</button>
+          </div>
+        </div>
+        </sc-if>
+      </div>
+
+      <!-- RESULT -->
+      <sc-if value="{{ showResult }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:18px;padding:24px;border-radius:20px;text-align:center;animation:popwin .5s ease both;{{ resultBoxStyle }}">
+          <div style="font-family:'Orbitron';font-weight:900;font-size:30px">{{ resultTitle }}</div>
+          <div style="font-size:15px;color:#cfe6ff;margin-top:6px">{{ resultSub }}</div>
+          <button onClick="{{ nextMatch }}" style="cursor:pointer;margin-top:16px;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#06121f;background:linear-gradient(135deg,#35e6ff,#a86bff);border:none;border-radius:12px;padding:12px 26px">다음 경기 →</button>
+        </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ============ SHOP ============ -->
+    <sc-if value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Chakra Petch';font-weight:700;font-size:12px;letter-spacing:.34em;color:#a86bff">INHOUSE STORE</div>
+        <div style="font-family:'Orbitron';font-weight:900;font-size:34px;margin-top:6px">내전 상점</div>
+        <div style="font-size:14px;color:#7fa6c8;margin-top:4px">포인트로 내전 참여 혜택을 구매하세요 · 보유 {{ points }}P</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+        <sc-for list="{{ shopItems }}" as="it" hint-placeholder-count="4">
+          <div style="{{ it.cardStyle }}">
+            <div style="font-size:34px;margin-bottom:10px">{{ it.icon }}</div>
+            <div style="font-family:'Gothic A1';font-weight:900;font-size:19px">{{ it.name }}</div>
+            <div style="font-size:12px;color:#8aa6c4;margin-top:6px;min-height:34px;line-height:1.4">{{ it.desc }}</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+              <div style="font-family:'Orbitron';font-weight:900;font-size:22px;color:#ffd76a;text-shadow:0 0 14px rgba(255,215,106,.4)">{{ it.price }}<span style="font-size:13px;color:#b89a52">P</span></div>
+              <span style="font-size:11px;color:#7fa6c8">보유 {{ it.owned }}개</span>
+            </div>
+            <button onClick="{{ it.onBuy }}" style="{{ it.btnStyle }}">{{ it.btnLabel }}</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:16px;padding:22px;border-radius:18px;border:1px dashed rgba(120,200,255,.25);background:rgba(20,28,54,.3);text-align:center;color:#7fa6c8;font-size:13px">
+        🔒 더 많은 상품 (닉네임 색상 · 노래 신청권 · 팀 지정권 등) 이 곧 추가됩니다
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ============ MINIGAMES ============ -->
+    <sc-if value="{{ isGame }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="margin-bottom:20px">
+        <div style="font-family:'Chakra Petch';font-weight:700;font-size:12px;letter-spacing:.34em;color:#ff5cc8">MINI GAMES</div>
+        <div style="font-family:'Orbitron';font-weight:900;font-size:34px;margin-top:6px">미니게임 아케이드</div>
+      </div>
+
+      <!-- HUB -->
+      <sc-if value="{{ gameHub }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <sc-for list="{{ gameCards }}" as="g" hint-placeholder-count="5">
+          <div onClick="{{ g.onOpen }}" style="{{ g.cardStyle }}">
+            <div style="font-size:40px">{{ g.icon }}</div>
+            <div style="font-family:'Gothic A1';font-weight:900;font-size:20px;margin-top:10px">{{ g.name }}</div>
+            <div style="font-size:12px;color:#8aa6c4;margin-top:4px">{{ g.desc }}</div>
+            <div style="{{ g.badgeStyle }}">{{ g.badge }}</div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <!-- IN-GAME -->
+      <sc-if value="{{ inGame }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <button onClick="{{ backToHub }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:700;font-size:13px;color:#9fd9ff;background:rgba(53,230,255,.08);border:1px solid rgba(53,230,255,.3);border-radius:10px;padding:9px 14px;margin-bottom:16px">← 아케이드</button>
+
+        <!-- SLOT -->
+        <sc-if value="{{ isSlot }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:28px;border-radius:22px;border:1px solid rgba(255,215,106,.3);background:linear-gradient(180deg,rgba(255,215,106,.08),rgba(10,14,30,.6));text-align:center">
+          <div style="font-family:'Orbitron';font-weight:900;font-size:24px;color:#ffd76a">🎰 네온 슬롯</div>
+          <div style="display:flex;justify-content:center;gap:14px;margin:26px 0">
+            <sc-for list="{{ slotReels }}" as="r" hint-placeholder-count="3">
+              <div style="width:110px;height:130px;border-radius:16px;display:grid;place-items:center;background:#070b1a;border:2px solid {{ r.color }};box-shadow:0 0 24px {{ r.glow }} inset;font-size:62px;font-weight:900;color:{{ r.color }}">{{ r.sym }}</div>
+            </sc-for>
+          </div>
+          <div style="font-family:'Gothic A1';font-weight:800;font-size:16px;min-height:24px;color:{{ slotMsgColor }}">{{ slotMsg }}</div>
+          <div style="font-size:12px;color:#7fa6c8;margin-top:6px">한 판 {{ slotCost }}P · 3개 일치 ×12 · 2개 일치 ×3</div>
+          <button onClick="{{ spinSlot }}" style="{{ slotBtnStyle }}">SPIN</button>
+        </div>
+        </sc-if>
+
+        <!-- ROULETTE -->
+        <sc-if value="{{ isRoulette }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:center;padding:28px;border-radius:22px;border:1px solid rgba(77,255,176,.25);background:linear-gradient(180deg,rgba(77,255,176,.06),rgba(10,14,30,.6))">
+          <div style="position:relative;width:260px;height:260px;margin:0 auto">
+            <div style="position:absolute;left:50%;top:-6px;transform:translateX(-50%);border-left:12px solid transparent;border-right:12px solid transparent;border-top:20px solid #ffd76a;z-index:3;filter:drop-shadow(0 0 6px #ffd76a)"></div>
+            <div style="position:absolute;inset:0;border-radius:50%;border:6px solid rgba(120,200,255,.2);transition:transform 4s cubic-bezier(.17,.67,.2,1);transform:rotate({{ wheelDeg }}deg);background:{{ wheelBg }}">
+              <sc-for list="{{ wheelNums }}" as="n" hint-placeholder-count="12">
+                <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate({{ n.deg }}deg) translateY(-104px);font-family:'Orbitron';font-weight:900;font-size:14px;color:#fff">{{ n.label }}</div>
+              </sc-for>
+            </div>
+            <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:#070b1a;border:2px solid rgba(120,200,255,.4);display:grid;place-items:center;font-size:22px;z-index:2">🎯</div>
+          </div>
+          <div>
+            <div style="font-family:'Orbitron';font-weight:900;font-size:22px;color:#4dffb0;margin-bottom:8px">룰렛</div>
+            <div style="font-size:13px;color:#8aa6c4;margin-bottom:16px">색을 고르고 베팅하세요 · 빨강/검정 ×2 · 0(초록) ×14</div>
+            <div style="display:flex;gap:10px;margin-bottom:16px">
+              <button onClick="{{ betRed }}" style="{{ rouRedStyle }}">빨강</button>
+              <button onClick="{{ betBlack }}" style="{{ rouBlackStyle }}">검정</button>
+              <button onClick="{{ betGreen }}" style="{{ rouGreenStyle }}">0</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:16px">
+              <sc-for list="{{ rouChips }}" as="c" hint-placeholder-count="3">
+                <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div style="font-family:'Gothic A1';font-weight:800;font-size:15px;min-height:22px;color:{{ rouMsgColor }}">{{ rouMsg }}</div>
+            <button onClick="{{ spinRoulette }}" style="{{ rouBtnStyle }}">SPIN · {{ rouBet }}P</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- MEMORY -->
+        <sc-if value="{{ isMemory }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:28px;border-radius:22px;border:1px solid rgba(168,107,255,.3);background:linear-gradient(180deg,rgba(168,107,255,.07),rgba(10,14,30,.6))">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px">
+            <div style="font-family:'Orbitron';font-weight:900;font-size:22px;color:#c79bff">🃏 카드 뒤집기</div>
+            <div style="font-size:13px;color:#8aa6c4">시도 {{ memMoves }} · 매치 {{ memMatched }}/6 · 보상 클리어 시 +{{ memReward }}P</div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;max-width:560px;margin:0 auto">
+            <sc-for list="{{ memCards }}" as="c" hint-placeholder-count="12">
+              <div onClick="{{ c.onFlip }}" style="{{ c.style }}">{{ c.face }}</div>
+            </sc-for>
+          </div>
+          <div style="text-align:center;margin-top:18px">
+            <div style="font-family:'Gothic A1';font-weight:800;font-size:15px;min-height:22px;color:#4dffb0">{{ memMsg }}</div>
+            <button onClick="{{ resetMemory }}" style="cursor:pointer;margin-top:10px;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#06121f;background:linear-gradient(135deg,#a86bff,#c79bff);border:none;border-radius:12px;padding:11px 22px">새 게임</button>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- BLACKJACK -->
+        <sc-if value="{{ isBlackjack }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:28px;border-radius:22px;border:1px solid rgba(53,230,255,.3);background:linear-gradient(180deg,rgba(7,40,30,.5),rgba(10,14,30,.65))">
+          <div style="font-family:'Orbitron';font-weight:900;font-size:22px;color:#35e6ff;margin-bottom:18px">🂡 블랙잭</div>
+          <div style="margin-bottom:16px">
+            <div style="font-size:12px;color:#8aa6c4;margin-bottom:8px">딜러 {{ dealerScoreLabel }}</div>
+            <div style="display:flex;gap:10px;min-height:96px">
+              <sc-for list="{{ dealerCards }}" as="c" hint-placeholder-count="2">
+                <div style="{{ c.style }}">{{ c.face }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-bottom:16px">
+            <div style="font-size:12px;color:#8aa6c4;margin-bottom:8px">플레이어 · {{ playerScore }}</div>
+            <div style="display:flex;gap:10px;min-height:96px">
+              <sc-for list="{{ playerCards }}" as="c" hint-placeholder-count="2">
+                <div style="{{ c.style }}">{{ c.face }}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="font-family:'Gothic A1';font-weight:800;font-size:16px;min-height:24px;color:{{ bjMsgColor }};margin-bottom:14px">{{ bjMsg }}</div>
+          <sc-if value="{{ bjIdle }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+              <span style="font-size:13px;color:#8aa6c4">베팅</span>
+              <div style="display:flex;gap:8px">
+                <sc-for list="{{ bjChips }}" as="c" hint-placeholder-count="3">
+                  <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+                </sc-for>
+              </div>
+              <button onClick="{{ bjDeal }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#06121f;background:linear-gradient(135deg,#35e6ff,#7ad9ff);border:none;border-radius:12px;padding:12px 24px">딜 · {{ bjBet }}P</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ bjPlaying }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px">
+              <button onClick="{{ bjHit }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:15px;color:#06121f;background:linear-gradient(135deg,#4dffb0,#9bffd0);border:none;border-radius:12px;padding:12px 28px">HIT</button>
+              <button onClick="{{ bjStand }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:15px;color:#1a0510;background:linear-gradient(135deg,#ff5b6e,#ff9aa8);border:none;border-radius:12px;padding:12px 28px">STAND</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ bjDone }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ bjReset }}" style="cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:14px;color:#06121f;background:linear-gradient(135deg,#35e6ff,#a86bff);border:none;border-radius:12px;padding:12px 26px">다시 하기</button>
+          </sc-if>
+        </div>
+        </sc-if>
+
+        <!-- HOLDEM placeholder -->
+        <sc-if value="{{ isHoldem }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:60px 28px;border-radius:22px;border:1px dashed rgba(255,92,200,.3);background:rgba(20,28,54,.3);text-align:center">
+          <div style="font-size:52px">🔒</div>
+          <div style="font-family:'Orbitron';font-weight:900;font-size:24px;color:#ff8ad6;margin-top:14px">텍사스 홀덤 · 준비중</div>
+          <div style="font-size:14px;color:#8aa6c4;margin-top:8px;line-height:1.6">멀티 플레이어 홀덤 테이블은 다음 업데이트에서 공개됩니다.<br>시청자끼리 포인트로 토너먼트를 즐길 수 있게 만들 예정이에요.</div>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1180,&quot;height&quot;:820},&quot;startingPoints&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:100,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:0,&quot;max&quot;:1000,&quot;step&quot;:10},&quot;maxBet&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:20,&quot;tsType&quot;:&quot;number&quot;,&quot;min&quot;:5,&quot;max&quot;:100,&quot;step&quot;:5},&quot;showScanlines&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const sp = (props && props.startingPoints) ?? 100;
+    this.state = {
+      points: sp,
+      tab: 'bet',
+      betLayout: 'wide',
+      // betting
+      bluePool: 620, redPool: 380,
+      picked: 'blue',
+      betAmount: 10,
+      bet: null,           // {team, amount, odds}
+      result: null,        // {win, title, sub, color}
+      match: 0,
+      // shop
+      inv: {sun:0, noban:0, allday:0, ext:0},
+      // games
+      gameView: 'hub',
+      // slot
+      slot: ['◆','▲','●'], slotMsg:'', slotMsgColor:'#7fa6c8', slotSpinning:false,
+      // roulette
+      wheelDeg: 0, rouColor:'red', rouBet:5, rouMsg:'', rouMsgColor:'#7fa6c8', rouSpinning:false,
+      // memory
+      mem: [], memMoves:0, memMsg:'',
+      // blackjack
+      bjBet:10, bjState:'idle', deck:[], pHand:[], dHand:[], bjMsg:'', bjMsgColor:'#7fa6c8'
+    };
+    this.MATCHES = [
+      {b:'블루 게이밍', r:'레드 드래곤', br:['다비도','콴다','쥬쥬','레오','민트'], rr:['파이어','녹턴','윈터','제로','샤이니']},
+      {b:'세렌디피티', r:'아포칼립스', br:['루나','케이','보라','한길','시온'], rr:['블레이즈','독고','유리','태풍','노바']},
+      {b:'프리즘', r:'볼텍스', br:['아쿠아','펜타','지노','하루','벨라'], rr:['크림슨','오딘','네오','마하','루키']}
+    ];
+    this.SYMS = [
+      {s:'◆',c:'#35e6ff'},{s:'▲',c:'#a86bff'},{s:'●',c:'#ff5cc8'},
+      {s:'★',c:'#ffd76a'},{s:'⬢',c:'#4dffb0'},{s:'7',c:'#ff5b6e'}
+    ];
+    this.MEMSYMS = [
+      {g:'◆',c:'#35e6ff'},{g:'▲',c:'#a86bff'},{g:'●',c:'#ff5cc8'},
+      {g:'★',c:'#ffd76a'},{g:'⬢',c:'#4dffb0'},{g:'✦',c:'#ff5b6e'}
+    ];
+    this.LS='davido_inhouse_v1';
+  }
+  componentDidMount(){
+    try{
+      const raw=localStorage.getItem(this.LS);
+      if(raw){const d=JSON.parse(raw); this.setState({points:d.points??this.state.points, inv:d.inv??this.state.inv});}
+    }catch(e){}
+    this.newMemory();
+  }
+  save(extra){
+    const s={...this.state,...(extra||{})};
+    try{localStorage.setItem(this.LS, JSON.stringify({points:s.points, inv:s.inv}));}catch(e){}
+  }
+  setPoints(n, extra){ const p=Math.max(0,Math.round(n)); this.setState({points:p,...(extra||{})}, ()=>this.save()); }
+  clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+  fmt(n){return Math.round(n).toLocaleString();}
+
+  // ===== ODDS =====
+  oddsFor(pool, total){ const m=0.92; return Math.max(1.02, (total/Math.max(1,pool))*m); }
+  // live odds incl. staged bet on picked team
+  liveOdds(){
+    const {bluePool,redPool,picked,betAmount}=this.state;
+    let bp=bluePool, rp=redPool;
+    if(picked==='blue') bp+=betAmount; else rp+=betAmount;
+    const t=bp+rp;
+    return {blue:this.oddsFor(bp,t), red:this.oddsFor(rp,t), bp, rp, t};
+  }
+
+  // ===== BETTING ACTIONS =====
+  pick(team){ if(this.state.bet) return; this.setState({picked:team}); }
+  setBet(v){ if(this.state.bet) return; this.setState({betAmount:this.clamp(v,1,this.props.maxBet??20)}); }
+  placeBet(){
+    const max=this.props.maxBet??20;
+    const amt=this.clamp(this.state.betAmount,1,max);
+    if(this.state.bet||amt>this.state.points||amt<1) return;
+    const lo=this.liveOdds();
+    const odds=this.state.picked==='blue'?lo.blue:lo.red;
+    this.setState({
+      bluePool:lo.bp, redPool:lo.rp,
+      bet:{team:this.state.picked, amount:amt, odds:Number(odds.toFixed(2))},
+      points:this.state.points-amt
+    }, ()=>this.save());
+  }
+  resolve(winner){
+    const b=this.state.bet; if(!b) return;
+    const won = b.team===winner;
+    const payout = won ? Math.round(b.amount*b.odds) : 0;
+    const teamName = winner==='blue' ? this.MATCHES[this.state.match%this.MATCHES.length].b : this.MATCHES[this.state.match%this.MATCHES.length].r;
+    const result = won
+      ? {win:true, title:'🎉 적중!', sub:`${teamName} 승리 · +${payout}P 획득 (배당 ${b.odds}x)`, }
+      : {win:false, title:'😢 미적중', sub:`${teamName} 승리 · 배팅 ${b.amount}P 소멸`};
+    this.setPoints(this.state.points+payout, {result, bet:null});
+  }
+  nextMatch(){
+    const m=(this.state.match+1)%this.MATCHES.length;
+    const seedB=400+Math.floor(Math.random()*350), seedR=400+Math.floor(Math.random()*350);
+    this.setState({match:m, bluePool:seedB, redPool:seedR, result:null, bet:null, picked:'blue', betAmount:10});
+  }
+
+  // ===== SHOP =====
+  buy(key,price){
+    if(this.state.points<price) return;
+    const inv={...this.state.inv}; inv[key]=(inv[key]||0)+1;
+    this.setPoints(this.state.points-price, {inv});
+  }
+
+  // ===== SLOT =====
+  spinSlot(){
+    if(this.state.slotSpinning) return;
+    const cost=5;
+    if(this.state.points<cost){ this.setState({slotMsg:'포인트가 부족합니다', slotMsgColor:'#ff8a98'}); return; }
+    this.setPoints(this.state.points-cost,{slotSpinning:true, slotMsg:'', slotMsgColor:'#7fa6c8'});
+    const rolls=[]; for(let i=0;i<3;i++) rolls.push(Math.floor(Math.random()*this.SYMS.length));
+    const cyc=setInterval(()=>{
+      this.setState(s=>({slot:[Math.floor(Math.random()*6),Math.floor(Math.random()*6),Math.floor(Math.random()*6)].map(i=>this.SYMS[i].s)}));
+    },70);
+    const stop=(idx,delay)=>setTimeout(()=>{ this.setState(s=>{const a=[...s.slot]; a[idx]=this.SYMS[rolls[idx]].s; return {slot:a};}); },delay);
+    stop(0,600); stop(1,950);
+    setTimeout(()=>{
+      clearInterval(cyc);
+      const a=rolls.map(i=>this.SYMS[i].s); a[0]=this.SYMS[rolls[0]].s; a[1]=this.SYMS[rolls[1]].s; a[2]=this.SYMS[rolls[2]].s;
+      this.setState({slot:a});
+      let win=0,msg='꽝! 다시 도전',col='#ff8a98';
+      if(rolls[0]===rolls[1]&&rolls[1]===rolls[2]){win=5*12;msg=`잭팟! +${win}P 🎉`;col='#4dffb0';}
+      else if(rolls[0]===rolls[1]||rolls[1]===rolls[2]||rolls[0]===rolls[2]){win=5*3;msg=`2개 일치! +${win}P`;col='#ffd76a';}
+      this.setPoints(this.state.points+win,{slotSpinning:false, slotMsg:msg, slotMsgColor:col});
+    },1300);
+  }
+
+  // ===== ROULETTE =====
+  setRouColor(c){ if(this.state.rouSpinning) return; this.setState({rouColor:c}); }
+  setRouBet(v){ if(this.state.rouSpinning) return; this.setState({rouBet:v}); }
+  wheelColorAt(i){ if(i===0) return 'green'; return i%2===1?'red':'black'; }
+  spinRoulette(){
+    if(this.state.rouSpinning) return;
+    const bet=this.state.rouBet;
+    if(this.state.points<bet){ this.setState({rouMsg:'포인트가 부족합니다', rouMsgColor:'#ff8a98'}); return; }
+    this.setPoints(this.state.points-bet,{rouSpinning:true, rouMsg:'', rouMsgColor:'#7fa6c8'});
+    const landIdx=Math.floor(Math.random()*13); // 0..12
+    const seg=360/13;
+    const target = 360*6 + (360 - landIdx*seg);
+    const base=this.state.wheelDeg;
+    const finalDeg = base + (target - (base%360));
+    this.setState({wheelDeg:finalDeg});
+    setTimeout(()=>{
+      const col=this.wheelColorAt(landIdx);
+      let mult=0;
+      if(col===this.state.rouColor){ mult = col==='green'?14:2; }
+      const win=bet*mult;
+      const msg = win>0 ? `${landIdx} (${col==='red'?'빨강':col==='black'?'검정':'초록'}) · +${win}P 🎉` : `${landIdx} (${col==='red'?'빨강':col==='black'?'검정':'초록'}) · 아쉽네요`;
+      this.setPoints(this.state.points+win,{rouSpinning:false, rouMsg:msg, rouMsgColor:win>0?'#4dffb0':'#ff8a98'});
+    },4200);
+  }
+
+  // ===== MEMORY =====
+  newMemory(){
+    let cards=[];
+    this.MEMSYMS.forEach((m,i)=>{ cards.push({id:i*2,k:i,g:m.g,c:m.c}); cards.push({id:i*2+1,k:i,g:m.g,c:m.c}); });
+    for(let i=cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[cards[i],cards[j]]=[cards[j],cards[i]];}
+    cards=cards.map(c=>({...c,rev:false,done:false}));
+    this.setState({mem:cards, memMoves:0, memMsg:'', memBusy:false, memFirst:-1});
+  }
+  flipCard(idx){
+    const s=this.state;
+    if(s.memBusy) return;
+    const cards=[...s.mem]; const c=cards[idx];
+    if(c.rev||c.done) return;
+    c.rev=true;
+    if(s.memFirst<0){ this.setState({mem:cards, memFirst:idx}); return; }
+    const first=cards[s.memFirst];
+    const moves=s.memMoves+1;
+    if(first.k===c.k){
+      first.done=true; c.done=true;
+      const matched=cards.filter(x=>x.done).length/2;
+      const cleared = matched===6;
+      if(cleared){
+        this.setState({mem:cards, memMoves:moves, memFirst:-1, memMsg:`클리어! +${30}P 🎉`});
+        this.setPoints(this.state.points+30);
+      } else {
+        this.setState({mem:cards, memMoves:moves, memFirst:-1});
+      }
+    } else {
+      this.setState({mem:cards, memMoves:moves, memFirst:-1, memBusy:true});
+      setTimeout(()=>{ const cc=[...this.state.mem]; cc[idx].rev=false; cc[this.state.mem.findIndex((x,i)=>x.rev&&!x.done&&i!==idx)>-1?this.state.mem.findIndex((x,i)=>x.rev&&!x.done&&i!==idx):idx].rev=false; this.setState({mem:cc, memBusy:false}); },720);
+    }
+  }
+
+  // ===== BLACKJACK =====
+  newDeck(){
+    const suits=['♠','♥','♦','♣'], ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+    let d=[]; suits.forEach(su=>ranks.forEach(r=>d.push({r,su,red:su==='♥'||su==='♦'})));
+    for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}
+    return d;
+  }
+  handScore(h){
+    let sum=0,aces=0;
+    h.forEach(c=>{ if(c.r==='A'){aces++;sum+=11;} else if(['K','Q','J','10'].includes(c.r)) sum+=10; else sum+=parseInt(c.r); });
+    while(sum>21&&aces>0){sum-=10;aces--;}
+    return sum;
+  }
+  setBjBet(v){ if(this.state.bjState!=='idle') return; this.setState({bjBet:v}); }
+  bjDeal(){
+    const bet=this.state.bjBet;
+    if(this.state.points<bet){ this.setState({bjMsg:'포인트가 부족합니다', bjMsgColor:'#ff8a98'}); return; }
+    const d=this.newDeck();
+    const p=[d.pop(),d.pop()], dl=[d.pop(),d.pop()];
+    const ps=this.handScore(p);
+    this.setPoints(this.state.points-bet,{deck:d, pHand:p, dHand:dl, bjState:'playing', bjMsg:'', bjMsgColor:'#7fa6c8'});
+    if(ps===21){ setTimeout(()=>this.bjStand(true),300); }
+  }
+  bjHit(){
+    if(this.state.bjState!=='playing') return;
+    const d=[...this.state.deck]; const p=[...this.state.pHand, d.pop()];
+    const sc=this.handScore(p);
+    if(sc>21){ this.setState({deck:d, pHand:p, bjState:'done', bjMsg:`버스트! ${sc} · 패배`, bjMsgColor:'#ff8a98'}); }
+    else { this.setState({deck:d, pHand:p}); }
+  }
+  bjStand(natural){
+    let d=[...this.state.deck]; let dl=[...this.state.dHand];
+    while(this.handScore(dl)<17){ dl.push(d.pop()); }
+    const ps=this.handScore(this.state.pHand), ds=this.handScore(dl);
+    let msg,col,payout=0; const bet=this.state.bjBet;
+    if(natural&&ps===21){ payout=Math.round(bet*2.5); msg=`블랙잭! +${payout-bet}P 🎉`; col='#4dffb0'; }
+    else if(ds>21){ payout=bet*2; msg=`딜러 버스트! +${bet}P 🎉`; col='#4dffb0'; }
+    else if(ps>ds){ payout=bet*2; msg=`승리! +${bet}P 🎉`; col='#4dffb0'; }
+    else if(ps===ds){ payout=bet; msg='무승부 · 반환'; col='#ffd76a'; }
+    else { payout=0; msg=`패배 · ${ds} vs ${ps}`; col='#ff8a98'; }
+    this.setPoints(this.state.points+payout,{deck:d, dHand:dl, bjState:'done', bjMsg:msg, bjMsgColor:col});
+  }
+  bjReset(){ this.setState({bjState:'idle', pHand:[], dHand:[], bjMsg:'', bjMsgColor:'#7fa6c8'}); }
+
+  // ===== STYLE HELPERS =====
+  tabStyle(active){
+    return `cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:15px;padding:13px 26px;border-radius:14px;transition:all .2s;border:1px solid ${active?'rgba(120,200,255,.5)':'rgba(120,200,255,.14)'};color:${active?'#06121f':'#9fc4e0'};background:${active?'linear-gradient(135deg,#35e6ff,#a86bff)':'rgba(20,28,54,.5)'};box-shadow:${active?'0 0 28px rgba(53,230,255,.35)':'none'}`;
+  }
+  layStyle(active){
+    return `cursor:pointer;font-family:'Gothic A1';font-weight:700;font-size:12px;padding:9px 14px;border-radius:10px;border:1px solid ${active?'rgba(53,230,255,.5)':'rgba(120,200,255,.14)'};color:${active?'#9beaff':'#7fa6c8'};background:${active?'rgba(53,230,255,.12)':'transparent'}`;
+  }
+  pickStyle(team){
+    const sel=this.state.picked===team && !this.state.bet;
+    const blue=team==='blue';
+    const grad=blue?'linear-gradient(135deg,#35e6ff,#7ad9ff)':'linear-gradient(135deg,#ff5b6e,#ff9aa8)';
+    return `cursor:pointer;width:100%;margin-top:18px;font-family:'Gothic A1';font-weight:800;font-size:15px;padding:13px;border-radius:13px;border:1px solid ${blue?'rgba(53,230,255,.4)':'rgba(255,92,110,.4)'};color:${sel?(blue?'#06121f':'#1a0510'):(blue?'#9beaff':'#ffb0ba')};background:${sel?grad:'transparent'};box-shadow:${sel?(blue?'0 0 24px rgba(53,230,255,.4)':'0 0 24px rgba(255,92,110,.4)'):'none'}`;
+  }
+  tagStyle(fav){
+    return `display:inline-block;font-family:'Chakra Petch';font-weight:700;font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:6px;margin-top:4px;color:${fav?'#06121f':'#ffd76a'};background:${fav?'#35e6ff':'rgba(255,215,106,.15)'};border:1px solid ${fav?'transparent':'rgba(255,215,106,.4)'}`;
+  }
+  chipStyle(active){
+    return `cursor:pointer;font-family:'Orbitron';font-weight:700;font-size:14px;padding:9px 14px;border-radius:10px;border:1px solid ${active?'rgba(53,230,255,.6)':'rgba(120,200,255,.18)'};color:${active?'#06121f':'#9fc4e0'};background:${active?'#35e6ff':'rgba(20,28,54,.5)'}`;
+  }
+
+  renderVals(){
+    const s=this.state, max=this.props.maxBet??20;
+    const M=this.MATCHES[s.match%this.MATCHES.length];
+    const lo=this.liveOdds();
+    const total=lo.t;
+    const blueOdds=(s.picked==='blue'?lo.blue:this.oddsFor(lo.bp,total));
+    const redOdds=(s.picked==='red'?lo.red:this.oddsFor(lo.rp,total));
+    const bOdds=this.oddsFor(lo.bp,total), rOdds=this.oddsFor(lo.rp,total);
+    const blueFav=bOdds<=rOdds;
+    const bluePct=Math.round(lo.bp/total*100), redPct=100-Math.round(lo.bp/total*100);
+    const payoutPreview=Math.round(s.betAmount*(s.picked==='blue'?bOdds:rOdds));
+
+    // chips
+    const chips=[5,10,15,max].filter((v,i,a)=>a.indexOf(v)===i).map(v=>({
+      label:v+'P', style:this.chipStyle(s.betAmount===v), onClick:()=>this.setBet(v)
+    }));
+
+    // shop
+    const shopDefs=[
+      {key:'sun', icon:'⚡', name:'선참권', price:60, desc:'다음 내전 첫 참가자로 우선 배정'},
+      {key:'noban', icon:'🛡️', name:'노밴권', price:120, desc:'내 챔피언 밴 면제 1회'},
+      {key:'allday', icon:'☀️', name:'종일권', price:230, desc:'오늘 하루 모든 판 우선 참여'},
+      {key:'ext', icon:'⏱️', name:'연장권', price:300, desc:'마감된 내전 라인업 연장 참여'}
+    ];
+    const shopItems=shopDefs.map(d=>{
+      const can=s.points>=d.price;
+      return {...d, owned:s.inv[d.key]||0,
+        cardStyle:`padding:22px;border-radius:18px;border:1px solid rgba(120,200,255,.18);background:linear-gradient(160deg,rgba(20,28,54,.6),rgba(10,14,30,.6));backdrop-filter:blur(10px);box-shadow:0 14px 40px rgba(0,0,0,.4)`,
+        btnLabel:can?'구매':'포인트 부족',
+        btnStyle:`cursor:${can?'pointer':'not-allowed'};width:100%;margin-top:14px;font-family:'Gothic A1';font-weight:800;font-size:14px;padding:11px;border-radius:12px;border:none;color:${can?'#06121f':'#6b7790'};background:${can?'linear-gradient(135deg,#ffd76a,#ffb84d)':'rgba(120,140,180,.12)'}`,
+        onBuy:()=>this.buy(d.key,d.price)};
+    });
+
+    // game cards
+    const gameDefs=[
+      {id:'slot', icon:'🎰', name:'네온 슬롯', desc:'3릴 잭팟 · 최대 ×12', badge:'PLAY', open:true, color:'#ffd76a'},
+      {id:'roulette', icon:'🎡', name:'룰렛', desc:'색에 베팅 · 최대 ×14', badge:'PLAY', open:true, color:'#4dffb0'},
+      {id:'memory', icon:'🃏', name:'카드 뒤집기', desc:'기억력 · 클리어 +30P', badge:'PLAY', open:true, color:'#a86bff'},
+      {id:'blackjack', icon:'🂡', name:'블랙잭', desc:'딜러와 21 승부', badge:'PLAY', open:true, color:'#35e6ff'},
+      {id:'holdem', icon:'🔒', name:'텍사스 홀덤', desc:'멀티 토너먼트', badge:'준비중', open:false, color:'#ff5cc8'}
+    ];
+    const gameCards=gameDefs.map(g=>({
+      ...g,
+      cardStyle:`cursor:pointer;padding:26px;border-radius:20px;text-align:center;border:1px solid ${g.open?'rgba(120,200,255,.2)':'rgba(120,140,180,.18)'};background:linear-gradient(160deg,rgba(20,28,54,.6),rgba(10,14,30,.6));backdrop-filter:blur(10px);transition:transform .2s;box-shadow:0 14px 40px rgba(0,0,0,.4)`,
+      badgeStyle:`display:inline-block;margin-top:14px;font-family:'Chakra Petch';font-weight:700;font-size:11px;letter-spacing:.12em;padding:5px 12px;border-radius:8px;color:${g.open?'#06121f':'#ff8ad6'};background:${g.open?g.color:'rgba(255,92,200,.12)'};border:1px solid ${g.open?'transparent':'rgba(255,92,200,.35)'}`,
+      onOpen:()=>this.setState({gameView:g.id})
+    }));
+
+    // slot reels
+    const slotReels=s.slot.map(sym=>{
+      const def=this.SYMS.find(x=>x.s===sym)||this.SYMS[0];
+      return {sym, color:def.c, glow:def.c+'55'};
+    });
+
+    // roulette wheel
+    const seg=360/13;
+    const wheelNums=Array.from({length:13},(_,i)=>({label:String(i), deg:i*seg}));
+    const stops=[]; for(let i=0;i<13;i++){ const c=this.wheelColorAt(i); const col=c==='green'?'#1f9d57':c==='red'?'#c0394b':'#1a1f33'; stops.push(`${col} ${i*seg}deg ${(i+1)*seg}deg`);}
+    const wheelBg=`conic-gradient(${stops.join(',')})`;
+    const rouChips=[5,10,20].map(v=>({label:v+'P', style:this.chipStyle(s.rouBet===v), onClick:()=>this.setRouBet(v)}));
+    const rouColBtn=(c,label,activeBg)=>`cursor:pointer;flex:1;font-family:'Gothic A1';font-weight:800;font-size:14px;padding:11px;border-radius:11px;border:1px solid ${s.rouColor===c?activeBg:'rgba(120,200,255,.2)'};color:${s.rouColor===c?'#fff':'#9fc4e0'};background:${s.rouColor===c?activeBg:'rgba(20,28,54,.5)'}`;
+
+    // memory cards
+    const memCards=s.mem.map((c,idx)=>{
+      const shown=c.rev||c.done;
+      return {
+        face: shown?c.g:'',
+        onFlip:()=>this.flipCard(idx),
+        style:`cursor:pointer;aspect-ratio:1;border-radius:14px;display:grid;place-items:center;font-size:38px;font-weight:900;transition:all .2s;color:${c.c};border:1px solid ${c.done?c.c:'rgba(120,200,255,.2)'};background:${shown?'rgba(10,14,30,.9)':'linear-gradient(160deg,rgba(168,107,255,.25),rgba(53,230,255,.18))'};box-shadow:${c.done?'0 0 18px '+c.c+'66':'none'};opacity:${c.done?.55:1}`
+      };
+    });
+
+    // blackjack cards
+    const cardStyle=(c,hidden)=>`width:64px;height:90px;border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;padding:8px;font-family:'Orbitron';font-weight:900;font-size:18px;background:${hidden?'linear-gradient(160deg,#1b2440,#0d1226)':'#f4f8ff'};border:1px solid ${hidden?'rgba(120,200,255,.3)':'transparent'};color:${hidden?'transparent':(c&&c.red?'#d23b52':'#10131f')}`;
+    const dealerReveal = s.bjState!=='playing';
+    const dealerCards=s.dHand.map((c,i)=>{
+      const hide=(!dealerReveal && i===1);
+      return {face:hide?'?':`${c.r}${c.su}`, style:cardStyle(c,hide)};
+    });
+    const playerCards=s.pHand.map(c=>({face:`${c.r}${c.su}`, style:cardStyle(c,false)}));
+    const dealerScoreLabel = dealerReveal ? this.handScore(s.dHand) : '?';
+    const playerScore = s.pHand.length?this.handScore(s.pHand):'';
+    const bjChips=[10,20,50].map(v=>({label:v+'P', style:this.chipStyle(s.bjBet===v), onClick:()=>this.setBjBet(v)}));
+
+    // result box
+    const resultBoxStyle = s.result
+      ? `border:1px solid ${s.result.win?'rgba(77,255,176,.5)':'rgba(255,92,110,.4)'};background:${s.result.win?'linear-gradient(160deg,rgba(77,255,176,.16),rgba(10,14,30,.6))':'linear-gradient(160deg,rgba(255,92,110,.14),rgba(10,14,30,.6))'};color:${s.result.win?'#9bffd0':'#ffb0ba'}`
+      : '';
+
+    return {
+      points:this.fmt(s.points),
+      scanlines:this.props.showScanlines??true,
+      maxBet:max,
+      // tabs
+      isBet:s.tab==='bet', isShop:s.tab==='shop', isGame:s.tab==='game',
+      goBet:()=>this.setState({tab:'bet'}), goShop:()=>this.setState({tab:'shop'}), goGame:()=>this.setState({tab:'game'}),
+      tabBetStyle:this.tabStyle(s.tab==='bet'), tabShopStyle:this.tabStyle(s.tab==='shop'), tabGameStyle:this.tabStyle(s.tab==='game'),
+      addPoints:()=>this.setPoints(s.points+50),
+      resetAll:()=>this.setPoints(100,{inv:{sun:0,noban:0,allday:0,ext:0}}),
+      // betting
+      matchTitle:`${M.b}  VS  ${M.r}`,
+      isWide:s.betLayout==='wide', isTower:s.betLayout==='tower',
+      setWide:()=>this.setState({betLayout:'wide'}), setTower:()=>this.setState({betLayout:'tower'}),
+      layWideStyle:this.layStyle(s.betLayout==='wide'), layTowerStyle:this.layStyle(s.betLayout==='tower'),
+      blueName:M.b, redName:M.r, blueRoster:M.br, redRoster:M.rr,
+      blueOdds:bOdds.toFixed(2), redOdds:rOdds.toFixed(2),
+      blueBar:bluePct+'%', redBar:redPct+'%',
+      bluePool:this.fmt(lo.bp), redPool:this.fmt(lo.rp),
+      blueTag:blueFav?'정배':'역배', redTag:blueFav?'역배':'정배',
+      blueTagStyle:this.tagStyle(blueFav), redTagStyle:this.tagStyle(!blueFav),
+      pickBlue:()=>this.pick('blue'), pickRed:()=>this.pick('red'),
+      pickBlueStyle:this.pickStyle('blue'), pickRedStyle:this.pickStyle('red'),
+      noBet:!s.bet, hasBet:!!s.bet,
+      pickedLabel: s.picked==='blue'?M.b+' (BLUE)':M.r+' (RED)',
+      chips, betAmount:s.betAmount, onSlide:(e)=>this.setBet(parseInt(e.target.value)),
+      payoutPreview:this.fmt(payoutPreview),
+      placeBet:()=>this.placeBet(),
+      placeBetStyle:`cursor:pointer;font-family:'Gothic A1';font-weight:800;font-size:15px;padding:13px 24px;border-radius:13px;border:none;color:#06121f;background:linear-gradient(135deg,#35e6ff,#a86bff);box-shadow:0 0 24px rgba(53,230,255,.35)`,
+      betTeamName: s.bet?(s.bet.team==='blue'?M.b:M.r):'',
+      betTeamShort: s.bet?(s.bet.team==='blue'?'B':'R'):'',
+      betChipStyle: s.bet? (s.bet.team==='blue'?'background:linear-gradient(135deg,#35e6ff,#7ad9ff);color:#06121f':'background:linear-gradient(135deg,#ff5b6e,#ff9aa8);color:#1a0510') : '',
+      lockedAmount: s.bet?s.bet.amount:0,
+      lockedOdds: s.bet?s.bet.odds:0,
+      lockedPayout: s.bet?this.fmt(Math.round(s.bet.amount*s.bet.odds)):0,
+      blueWins:()=>this.resolve('blue'), redWins:()=>this.resolve('red'),
+      showResult:!!s.result,
+      resultTitle:s.result?s.result.title:'', resultSub:s.result?s.result.sub:'', resultBoxStyle,
+      nextMatch:()=>this.nextMatch(),
+      // shop
+      shopItems,
+      // games
+      gameHub:s.gameView==='hub', inGame:s.gameView!=='hub',
+      gameCards, backToHub:()=>this.setState({gameView:'hub'}),
+      isSlot:s.gameView==='slot', isRoulette:s.gameView==='roulette', isMemory:s.gameView==='memory', isBlackjack:s.gameView==='blackjack', isHoldem:s.gameView==='holdem',
+      // slot
+      slotReels, slotMsg:s.slotMsg, slotMsgColor:s.slotMsgColor, slotCost:5,
+      spinSlot:()=>this.spinSlot(),
+      slotBtnStyle:`cursor:${s.slotSpinning?'wait':'pointer'};margin-top:18px;font-family:'Orbitron';font-weight:900;font-size:18px;letter-spacing:.1em;padding:14px 50px;border-radius:14px;border:none;color:#1a1405;background:linear-gradient(135deg,#ffd76a,#ffb84d);box-shadow:0 0 28px rgba(255,215,106,.4);opacity:${s.slotSpinning?.6:1}`,
+      // roulette
+      wheelDeg:s.wheelDeg, wheelBg, wheelNums,
+      rouChips, rouBet:s.rouBet, rouMsg:s.rouMsg, rouMsgColor:s.rouMsgColor,
+      betRed:()=>this.setRouColor('red'), betBlack:()=>this.setRouColor('black'), betGreen:()=>this.setRouColor('green'),
+      rouRedStyle:rouColBtn('red','빨강','#c0394b'), rouBlackStyle:rouColBtn('black','검정','#2a3350'), rouGreenStyle:rouColBtn('green','0','#1f9d57'),
+      spinRoulette:()=>this.spinRoulette(),
+      rouBtnStyle:`cursor:${s.rouSpinning?'wait':'pointer'};margin-top:14px;font-family:'Orbitron';font-weight:900;font-size:16px;letter-spacing:.08em;padding:13px 36px;border-radius:13px;border:none;color:#06121f;background:linear-gradient(135deg,#4dffb0,#9bffd0);box-shadow:0 0 24px rgba(77,255,176,.35);opacity:${s.rouSpinning?.6:1}`,
+      // memory
+      memCards, memMoves:s.memMoves, memMatched:s.mem.filter(c=>c.done).length/2, memReward:30, memMsg:s.memMsg,
+      resetMemory:()=>this.newMemory(),
+      // blackjack
+      dealerCards, playerCards, dealerScoreLabel, playerScore,
+      bjMsg:s.bjMsg, bjMsgColor:s.bjMsgColor,
+      bjIdle:s.bjState==='idle', bjPlaying:s.bjState==='playing', bjDone:s.bjState==='done',
+      bjChips, bjBet:s.bjBet,
+      bjDeal:()=>this.bjDeal(), bjHit:()=>this.bjHit(), bjStand:()=>this.bjStand(false), bjReset:()=>this.bjReset()
+    };
+  }
+}
+</script>
+</body>
+</html>
